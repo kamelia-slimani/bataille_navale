@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import random
 import pygame
 import sys
@@ -26,21 +25,19 @@ def afficher_grille(grille):
 def tirer(x, y):
     if grille[x][y] == 'X':
         print("Touché !")
-        grille[x][y] = '*'
         return True
     else:
         print("Manqué !")
-        grille[x][y] = 'M'
         return False
 
 def tirer_case(x, y):
     if grille[x][y] == 'X':
         print("Touché !")
-        grille[x][y] = '*'
+        grille[x][y] = 'O'  # Remplace le bateau touché par de l'eau ('O')
         return True
     else:
         print("Manqué !")
-        grille[x][y] = 'M'
+        grille[x][y] = 'M'  # Marque la case comme manquée ('M')
         return False
 
 def creer_interface():
@@ -54,7 +51,7 @@ def creer_interface():
     fenetre.blit(fond, (0, 0))
 
     # Charger l'image du bateau
-    bateau = pygame.image.load('bateau.png')
+    bateau = pygame.image.load('petit_bateau.png')
     bateau = pygame.transform.scale(bateau, (CASE_SIZE, CASE_SIZE))
 
     # Dessiner les navires
@@ -82,6 +79,11 @@ def creer_interface():
                     continue
 
                 if tirer_case(y, x):
-                    break
+                    fenetre.blit(fond, (0, 0))
+                    for i in range(TAILLE_GRILLE):
+                        for j in range(TAILLE_GRILLE):
+                            if grille[i][j] == 'X':
+                                fenetre.blit(bateau, (j*CASE_SIZE, i*CASE_SIZE))
+                    pygame.display.flip()
 
 creer_interface()
